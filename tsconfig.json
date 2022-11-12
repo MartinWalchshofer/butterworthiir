@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "target": "ESNext",
+        "outDir" : "lib",
+        "strict": true,
+    },
+    "include": [
+        "src"
+    ]
+}
