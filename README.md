@@ -7,13 +7,9 @@ http://www-users.cs.york.ac.uk/~fisher/mkfilter<br />
 https://github.com/university-of-york/cs-www-users-fisher<br />
 
 ## run example
-Run 'npx ts-node examples/butterworth.ts' from the root folder to execute the example script.<br />
+Run 'npx ts-node examples/filter_example.ts' or 'npx ts-node examples/create_filter_example.ts' from the root folder to execute the example script.<br />
 
-## octave equivalent
-Functionality can be validated with Octave.<br />
-
-samplingRate = 1000;<br />
-cutoffFrequency = 10;<br />
-order = 2;<br />
-[b,a] = butter(order,cutoffFrequency/(samplingRate/2));<br />
-dataFiltOctave = filter(b,a,data);<br />
+## Octave/Matlab comparison
+Functionality can be validated with Octave or Matlab.<br />
+run 'filter_example_valid.m' in Matlab or octave after executing the typescript example 'filter_example.ts' to compare the behavior.
+run 'create_filter_example_valid.m' in Matlab or octave after executing the typescript example 'create_filter_example.ts' to compare filter coefficients calculated with Octave/Matlab or typescript.

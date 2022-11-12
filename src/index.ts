@@ -199,8 +199,6 @@ export class Butterworth{
         //expand poly
         var topCoeffs : Complex[] = new Array(numpoles + 1);
         var botCoeffs : Complex[] = new Array(numpoles + 1);
-        var x : Complex[] = new Array(numpoles + 1);
-        var y : Complex[] = new Array(numpoles + 1);
         var a :number[] = new Array(numpoles + 1);
         var b :number[] = new Array(numpoles + 1);
         this.#expand(zzeros, topCoeffs, numpoles);
@@ -216,12 +214,11 @@ export class Butterworth{
             FCgain = this.#evaluate(topCoeffs, botCoeffs, numpoles, this.#Cone);
 
         for (var i : number = 0; i <= numpoles; i++) {
-            x[i] = new Complex(0,0);
-            y[i] = new Complex(0,0);
-            x[i].Real = topCoeffs[i].Real / botCoeffs[numpoles].Real / FCgain.Magnitude;
-            y[i].Real = botCoeffs[i].Real / botCoeffs[numpoles].Real;
-            a[i] = y[i].Real;
-            b[i] = x[i].Real;               
+            if(type == FilterType.Highpass ||  type == FilterType.Lowpass)
+                b[i] = topCoeffs[i].Real / botCoeffs[numpoles].Real / FCgain.Magnitude / Math.sqrt(2);
+            else
+                b[i] = topCoeffs[i].Real / botCoeffs[numpoles].Real / FCgain.Magnitude;
+            a[i] = botCoeffs[i].Real / botCoeffs[numpoles].Real;              
         }
 
         this.Coefficients = new FilterCoefficients(a.reverse(), b.reverse());
