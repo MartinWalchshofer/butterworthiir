@@ -305,6 +305,21 @@ export class Filter
      * @returns Filtered data.
      */
     static filter(data : number[][], filt : Butterworth) {
+        return this.#filt(data,filt,false);
+    }
+
+    /**
+     * Applies a filter to the input data twice; forwards and backwards.
+     * @param data 2D Array structured as [samples, channels].
+     * @param filt A filter object @see Butterworth.
+     * @returns Filtered data.
+     */
+    static filtfilt(data : number[][], filt : Butterworth)
+    {
+        return this.#filt(data,filt,true);
+    }
+
+    static #filt(data : number[][], filt : Butterworth, filtfilt : boolean) {
         var rows : number = data.length;
         var columns : number = data[0].length;
         var coeff : FilterCoefficients = filt.Coefficients;
@@ -357,12 +372,28 @@ export class Filter
             }
         }
 
-        return dataOut;
-    }
+        //filter reverse
+        if(filtfilt){
+            for(var c : number = columns - 1; c >= 0; c--) {
+                for(var r : number = rows - 1; r >= 0; r--) {
+                    //shift buffer
+                    for (var i : number = 0; i < numberOfCoefficients - 1; i++){
+                        x[i][c] = x[i + 1][c];
+                        y[i][c] = y[i + 1][c];
+                    }
 
-    static filtfilt(data : number[][], coeff : FilterCoefficients)
-    {
-        throw Error("not implemented yet");
+                    //transfer function
+                    x[numberOfCoefficients - 1][c] = dataOut[r][c];
+                    y[numberOfCoefficients - 1][c] = coeff.b[0] * x[numberOfCoefficients - 1][c];
+                    for (var i : number = 1; i < numberOfCoefficients; i++){
+                        y[numberOfCoefficients - 1][c] = y[numberOfCoefficients - 1][c] + coeff.b[i] * x[numberOfCoefficients - 1 - i][c] - coeff.a[i] * y[numberOfCoefficients - 1 - i][c];
+                    }
+                    dataOut[r][c] = y[numberOfCoefficients - 1][c];
+                }
+            }
+        }
+
+        return dataOut;
     }
 }
 

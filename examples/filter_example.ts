@@ -31,6 +31,9 @@ console.log(filt.Coefficients);
 //apply filter
 var dataFilt : number[][] = Filter.filter(data, filt);
 
+//apply filt filt
+var dataFiltFilt : number[][] = Filter.filtfilt(data, filt);
+
 //store data as csv
 var dataCSV = data
   .map((item) => {
@@ -40,6 +43,13 @@ var dataCSV = data
   .join("\n");
 
 var dataFiltCSV = dataFilt
+  .map((item) => {
+    var row = item;
+    return row.join(",");
+  })
+  .join("\n");
+
+var dataFiltFiltCSV = dataFiltFilt
   .map((item) => {
     var row = item;
     return row.join(",");
@@ -58,4 +68,11 @@ fs.writeFile('./examples/dataFilt.csv', dataFiltCSV,  function(err) {
         return console.error(err);
     }
     console.log("Created dataFilt file.");
+});
+
+fs.writeFile('./examples/dataFiltFilt.csv', dataFiltFiltCSV,  function(err) {
+  if (err) {
+      return console.error(err);
+  }
+  console.log("Created dataFiltFiltfile.");
 });
