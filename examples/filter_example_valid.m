@@ -34,6 +34,8 @@ plot(dataFilt(:,1),'-r','LineWidth',1);
 plot(dataFiltFilt(:,1),'-g','LineWidth',1);
 plot(dataFiltOctave(:,1),'--c','LineWidth',1);
 plot(dataFiltFiltOctave(:,1),'--m','LineWidth',1);
+axis([1 length(dataFilt) 100 200]);
+legend('raw data','filter ts','filtfilt ts', 'filter octave', 'filtfilt octave');
 ylabel('A');
 xlabel('samples[n]');
 figure;
