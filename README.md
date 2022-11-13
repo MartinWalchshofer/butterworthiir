@@ -13,3 +13,5 @@ Run 'npx ts-node examples/filter_example.ts' or 'npx ts-node examples/create_fil
 Functionality can be validated with Octave or Matlab.<br />
 run 'filter_example_valid.m' in Matlab or octave after executing the typescript example 'filter_example.ts' to compare the behavior.
 run 'create_filter_example_valid.m' in Matlab or octave after executing the typescript example 'create_filter_example.ts' to compare filter coefficients calculated with Octave/Matlab or typescript.
+
+![image](https://raw.githubusercontent.com/MartinWalchshofer/butterworthiir/main/butterworth.png)
