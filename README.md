@@ -6,6 +6,9 @@ see:<br />
 http://www-users.cs.york.ac.uk/~fisher/mkfilter<br />
 https://github.com/university-of-york/cs-www-users-fisher<br />
 
+## compile
+Run 'npm run build' from the root folder to compile the library.
+
 ## run example
 Run 'npx ts-node examples/filter_example.ts' or 'npx ts-node examples/create_filter_example.ts' from the root folder to execute the example script.<br />
 
