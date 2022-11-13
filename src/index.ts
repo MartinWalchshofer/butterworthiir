@@ -406,12 +406,71 @@ export class Filter
 
 export class RealtimeFilter
 {
-    constructor(coefficients : FilterCoefficients) {
-        throw Error("not implemented yet");
+    #coeff : FilterCoefficients;
+    #channels : number;
+    #x : number[][];
+    #y : number[][];
+
+    constructor(filt : Butterworth, channels : number) {
+        this.#coeff = filt.Coefficients;
+        this.#channels = channels;
+
+        if(this.#coeff.a.length  != this.#coeff.b.length)
+            throw new Error("Invalid filter coefficients.");
+
+        var numberOfCoefficients : number = this.#coeff.a.length;
+        this.#x = new Array(numberOfCoefficients);
+        this.#y = new Array(numberOfCoefficients);
+        for(var i : number = 0; i < numberOfCoefficients;i++) {
+            this.#x[i] = new Array(this.#channels);
+        }
+
+        for(var i : number = 0; i < numberOfCoefficients;i++) {
+            this.#y[i] = new Array(this.#channels);
+        }
+
+        var xyr : number = this.#x.length;
+        var xyc : number = this.#x[0].length;
+        for(var i :number = 0; i < xyr; i ++) {
+            for(var j : number = 0; j < xyc; j++) {
+                this.#x[i][j] = 0;
+                this.#y[i][j] = 0;          
+            }
+        }
     }
 
     step(data : number[][]) {
-        throw Error("not implemented yet");
+        var rows : number = data.length;
+        var columns : number = data[0].length;
+        var numberOfCoefficients : number = this.#coeff.a.length;
+
+        if(columns != this.#channels)
+            throw new Error('Invalid data dimensions.');
+
+        var dataOut : number[][] = new Array(rows);
+        for(var i : number = 0; i < rows; i++) {
+            dataOut[i] = new Array(columns);
+        }
+
+        for(var c : number = 0; c < columns; c++) {
+            for(var r : number = 0; r < rows; r++) {
+                //shift buffer
+                for (var i : number = 0; i < numberOfCoefficients - 1; i++){
+                    this.#x[i][c] = this.#x[i + 1][c];
+                    this.#y[i][c] = this.#y[i + 1][c];
+                }
+
+                //transfer function
+                this.#x[numberOfCoefficients - 1][c] = data[r][c];
+                this.#y[numberOfCoefficients - 1][c] = this.#coeff.b[0] * this.#x[numberOfCoefficients - 1][c];
+                for (var i : number = 1; i < numberOfCoefficients; i++){
+                    this.#y[numberOfCoefficients - 1][c] = this.#y[numberOfCoefficients - 1][c] + this.#coeff.b[i] * this.#x[numberOfCoefficients - 1 - i][c] - this.#coeff.a[i] * this.#y[numberOfCoefficients - 1 - i][c];
+                }
+                dataOut[r][c] = this.#y[numberOfCoefficients - 1][c];
+            }
+        }
+
+        return dataOut;
     }
 }
 
