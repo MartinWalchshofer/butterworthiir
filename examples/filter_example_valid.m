@@ -28,16 +28,22 @@ end
 
 %plot data
 figure;
+subplot(2,1,1);
 plot(data(:,1),'-b');
 hold on;
 plot(dataFilt(:,1),'-r','LineWidth',1);
-plot(dataFiltFilt(:,1),'-g','LineWidth',1);
-plot(dataFiltOctave(:,1),'--c','LineWidth',1);
-plot(dataFiltFiltOctave(:,1),'--m','LineWidth',1);
+plot(dataFiltOctave(:,1),'--g','LineWidth',1);
 axis([1 length(dataFilt) 100 200]);
-legend('raw data','filter ts','filtfilt ts', 'filter octave', 'filtfilt octave');
+legend('raw data','filter ts', 'filter octave');
+subplot(2,1,2);
+plot(data(:,1),'-b');
+hold on;
+plot(dataFiltFilt(:,1),'-r','LineWidth',1);
+plot(dataFiltFiltOctave(:,1),'--g','LineWidth',1);
+axis([1 length(dataFilt) 100 200]);
 ylabel('A');
 xlabel('samples[n]');
+legend('raw data','filtfilt ts', 'filtfilt octave');
 figure;
 plot(data);
 title('input data');
