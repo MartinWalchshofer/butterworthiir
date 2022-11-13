@@ -305,7 +305,7 @@ export class Filter
      * @returns Filtered data.
      */
     static filter(data : number[][], filt : Butterworth) {
-        return this.#filt(data,filt,false);
+        return this.#filt(data,filt,false, false);
     }
 
     /**
@@ -316,10 +316,10 @@ export class Filter
      */
     static filtfilt(data : number[][], filt : Butterworth)
     {
-        return this.#filt(data,filt,true);
+        return this.#filt(data,filt,true, false);
     }
 
-    static #filt(data : number[][], filt : Butterworth, filtfilt : boolean) {
+    static #filt(data : number[][], filt : Butterworth, filtfilt : boolean, offsetCorrection :boolean) {
         var rows : number = data.length;
         var columns : number = data[0].length;
         var coeff : FilterCoefficients = filt.Coefficients;
@@ -348,8 +348,15 @@ export class Filter
         var xyc : number = x[0].length;
         for(var i :number = 0; i < xyr; i ++) {
             for(var j : number = 0; j < xyc; j++) {
-                x[i][j] = 0;
-                y[i][j] = 0;
+                if(offsetCorrection) {
+                    x[i][j] = data[0][0];
+                    y[i][j] = data[0][0];
+                }
+                else
+                {
+                    x[i][j] = 0;
+                    y[i][j] = 0;
+                }             
             }
         }
         
