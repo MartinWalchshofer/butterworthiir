@@ -1,6 +1,8 @@
 # butterworthiir
 A typescript implementation of a butterworth iir filter<br />
 
+Butterworth filters are used to filter data. It is possible to design highpass, lowpass, bandpass and notch filters to remove certain frequency bands from signals.
+
 This library is based on mkfilter.c by Anthony J. Fisher, University of York, September 1992.<br />
 see:<br />
 http://www-users.cs.york.ac.uk/~fisher/mkfilter<br />
